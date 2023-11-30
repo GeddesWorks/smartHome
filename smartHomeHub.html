@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Geddes Smart Home</title>
+  <style>
+    body {
+      background-color: #333;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Basic styling for buttons */
+    .button {
+      display: block;
+      margin: 10px auto;
+      padding: 15px;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 18px;
+      text-align: center;
+      color: #fff;
+      width: 150px;
+      transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+      background-color: #555;
+      box-shadow: 0 4px #999;
+    }
+
+    /* Styles for room headings */
+    h1, h2 {
+      color: #fff;
+      text-align: center;
+    }
+
+    /* Grid layout */
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      justify-content: center;
+      margin-bottom: 50px;
+    }
+
+    /* All rooms buttons layout */
+    .all-rooms-section {
+      text-align: center;
+    }
+
+    .all-rooms-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    /* Room-specific styling */
+    .living-room, .kitchen, .office, .bedroom {
+      background-color: #777;
+    }
+
+    .all-rooms {
+      background-color: #6f42c1;
+    }
+
+    /* Button hover effect */
+    .button:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+      box-shadow: 0 6px #999;
+    }
+
+    /* Button click effect */
+    .button:active {
+      transform: translateY(2px);
+      box-shadow: 0 2px #999;
+    }
+    
+    .logo {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 999;
+      /* Additional styles for the logo size, etc. */
+      width: 30%;
+    }
+  </style>
+</head>
+<body>
+  <img class="logo" src="https://cdn.glitch.global/82cb22fa-f731-44fb-920a-62677fdd14e2/GeddesWorksCutout.png?v=1701152252228" alt="Logo">
+  <h1>Geddes Smart Home</h1>
+  <div class="grid-container">
+    <div>
+      <h2>Living Room</h2>
+      <button class="button living-room" onclick="turnOn('living-room')">Turn On</button>
+      <button class="button living-room" onclick="turnOff('living-room')">Turn Off</button>
+    </div>
+    <div>
+      <h2>Kitchen</h2>
+      <button class="button kitchen" onclick="turnOn('kitchen')">Turn On</button>
+      <button class="button kitchen" onclick="turnOff('kitchen')">Turn Off</button>
+    </div>
+    <div>
+      <h2>Office</h2>
+      <button class="button office" onclick="turnOn('office')">Turn On</button>
+      <button class="button office" onclick="turnOff('office')">Turn Off</button>
+    </div>
+    <div>
+      <h2>Bedroom</h2>
+      <button class="button bedroom" onclick="turnOn('bedroom')">Turn On</button>
+      <button class="button bedroom" onclick="turnOff('bedroom')">Turn Off</button>
+    </div>
+  </div>
+
+  <div class="all-rooms-section">
+    <div class="all-rooms-buttons">
+      <button class="button all-rooms" onclick="turnOn('all')">All On</button>
+      <button class="button all-rooms" onclick="turnOff('all')">All Off</button>
+    </div>
+  </div>
+
+  <script>
+    // Function to turn on individual rooms
+    function turnOn(room) {
+      // Send webhook for turning on the selected room
+      const urls = {
+        'living-room': 'https://trigger.esp8266-server.de/api/?id=5071&hash=fbeae237ed8f7576ce05b01b81dd95d7',
+        'kitchen': 'https://trigger.esp8266-server.de/api/?id=5072&hash=fbeae237ed8f7576ce05b01b81dd95d7',
+        'office': 'https://trigger.esp8266-server.de/api/?id=5076&hash=fbeae237ed8f7576ce05b01b81dd95d7',
+        'bedroom': 'https://trigger.esp8266-server.de/api/?id=5074&hash=fbeae237ed8f7576ce05b01b81dd95d7',
+        'all': 'https://trigger.esp8266-server.de/api/?id=5078&hash=fbeae237ed8f7576ce05b01b81dd95d7'
+      };
+
+      sendWebhook(urls[room]);
+      applyClickEffect(event);
+    }
+
+    // Function to turn off individual rooms
+    function turnOff(room) {
+      // Send webhook for turning off the selected room
+      const urls = {
+        'living-room': 'https://trigger.esp8266-server.de/api/?id=5070&hash=fbeae237ed8f7576ce05b01b81dd95d7',
+        'kitchen': 'https://trigger.esp8266-server.de/api/?id=5073&hash=fbeae237ed8f7576ce05b01b81dd95d7',
+        'office': 'https://trigger.esp8266-server.de/api/?id=5077&hash=fbeae237ed8f7576ce05b01b81dd95d7',
+        'bedroom': 'https://trigger.esp8266-server.de/api/?id=5075&hash=fbeae237ed8f7576ce05b01b81dd95d7',
+        'all': 'https://trigger.esp8266-server.de/api/?id=5079&hash=fbeae237ed8f7576ce05b01b81dd95d7'
+      };
+
+      sendWebhook(urls[room]);
+      applyClickEffect(event);
+    }
+
+    // Function to send the webhook
+    function sendWebhook(url) {
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ key: 'value' }),
+      })
+        .then(response => {
+          if (response.ok) {
+            console.log(`Webhook sent successfully to ${url}`);
+          } else {
+            console.error(`Error sending webhook to ${url}`);
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }
+
+    // Apply click effect
+    function applyClickEffect(event) {
+      event.target.style.backgroundColor = "#444";
+      setTimeout(() => {
+        event.target.style.backgroundColor = "";
+      }, 200);
+    }
+  </script>
+</body>
+</html>
