@@ -1,0 +1,41 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main # Change to your branch name if needed
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+          cache-dependency-path: SmartHome/package-lock.json # Adjust this path!
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: SmartHome # 👈 Set your project folder here!
+
+      - name: Build the project
+        run: npm run build
+        working-directory: SmartHome # 👈 Again, set the working directory
+
+      - name: Fix GitHub Pages MIME Type Issue
+        run: touch SmartHome/dist/.nojekyll
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: SmartHome/dist # 👈 Adjust to where Vite outputs build files
