@@ -25,11 +25,11 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-        working-directory: SmartHome # 👈 Set your project folder here!
+        # working-directory: SmartHome # 👈 Set your project folder here!
 
       - name: Build the project
         run: npm run build
-        working-directory: SmartHome # 👈 Again, set the working directory
+        # working-directory: SmartHome # 👈 Again, set the working directory
 
       - name: Fix GitHub Pages MIME Type Issue
         run: touch SmartHome/dist/.nojekyll
