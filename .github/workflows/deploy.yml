@@ -32,7 +32,7 @@ jobs:
         # working-directory: SmartHome # 👈 Again, set the working directory
 
       - name: Fix GitHub Pages MIME Type Issue
-        run: touch SmartHome/dist/.nojekyll
+        run: touch dist/.nojekyll
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
