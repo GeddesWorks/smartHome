@@ -21,7 +21,7 @@ jobs:
         with:
           node-version: 18
           cache: npm
-          cache-dependency-path: SmartHome/package-lock.json # Adjust this path!
+          cache-dependency-path: package-lock.json # Adjust this path!
 
       - name: Install dependencies
         run: npm install
