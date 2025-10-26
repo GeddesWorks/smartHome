@@ -9,7 +9,8 @@ export default defineConfig({
     legacy({
       targets: ['ios >= 10.3'],
       additionalLegacyPolyfills: ['regenerator-runtime/runtime'],
-      modernPolyfills: true
+      modernPolyfills: true,
+      renderLegacyChunks: false
     })
   ],
   server: {
